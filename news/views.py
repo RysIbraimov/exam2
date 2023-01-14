@@ -4,7 +4,7 @@ from rest_framework import generics,viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAdminUser
-
+from rest_framework.authentication import SessionAuthentication,TokenAuthentication
 
 from rest_framework.filters import OrderingFilter,SearchFilter
 
@@ -16,6 +16,7 @@ from .paginations import NewsCommentPagination
 class NewsListCreateApiView(generics.ListCreateAPIView):
     queryset = News.objects.all().order_by('pk')
     serializer_class = NewsSerializer
+    authentication_classes = [SessionAuthentication,TokenAuthentication]
     permission_classes = [IsAuthorOrReadOnly,]
     pagination_class = NewsCommentPagination
     filter_backends = [OrderingFilter,SearchFilter]
@@ -28,6 +29,7 @@ class NewsListCreateApiView(generics.ListCreateAPIView):
 class NewsRetrieveUpdateDestroyApiView(generics.RetrieveUpdateDestroyAPIView):
     queryset = News.objects.all()
     serializer_class = NewsSerializer
+    authentication_classes = [SessionAuthentication,TokenAuthentication]
     permission_classes = [IsOwnerOrReadOnly,]
 
     def get_object(self):
@@ -36,6 +38,7 @@ class NewsRetrieveUpdateDestroyApiView(generics.RetrieveUpdateDestroyAPIView):
 class CommentsListCreateApiView(generics.ListCreateAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
+    authentication_classes = [SessionAuthentication,TokenAuthentication]
     permission_classes = [IsAuthorOrReadOnly,]
     pagination_class = NewsCommentPagination
 
@@ -50,6 +53,7 @@ class CommentsListCreateApiView(generics.ListCreateAPIView):
 class CommentRetrieveUpdateDestroyApiView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
+    authentication_classes = [SessionAuthentication,TokenAuthentication]
     permission_classes = [IsOwnerOrReadOnly,]
 
     def get_queryset(self):
